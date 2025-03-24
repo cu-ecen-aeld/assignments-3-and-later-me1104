@@ -10,4 +10,4 @@ writer: $(OBJ)
 
 
 clean:
-	rm *.o writer
+	rm -f *.o writer

@@ -72,20 +72,19 @@ mkdir -p var/log
 cd "$OUTDIR"
 if [ ! -d "${OUTDIR}/busybox" ]
 then
-git clone git://busybox.net/busybox.git
+    git clone git://busybox.net/busybox.git
     cd busybox
     git checkout ${BUSYBOX_VERSION}
-    
+
     make distclean
     make defconfig
     make ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE}
-    make CONFIG_PREFIX=${OUTDIR}/rootfs ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} install
-
 else
     cd busybox
 fi
 
-# TODO: Make and install busybox
+# install busybox
+make CONFIG_PREFIX=${OUTDIR}/rootfs ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} install
 
 echo "Library dependencies"
 cd "$OUTDIR/rootfs"

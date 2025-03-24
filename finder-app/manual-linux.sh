@@ -5,6 +5,8 @@
 set -e
 set -u
 
+SCRIPT_WD=$(pwd)
+
 OUTDIR=/home/m/coursera/aeld/linux/
 KERNEL_REPO=git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git
 KERNEL_VERSION=v5.15.163
@@ -86,6 +88,9 @@ fi
 # install busybox
 make CONFIG_PREFIX=${OUTDIR}/rootfs ARCH=${ARCH} CROSS_COMPILE=${CROSS_COMPILE} install
 
+#
+sudo chmod u+s ${OUTDIR}/rootfs/bin/busybox
+
 echo "Library dependencies"
 cd "$OUTDIR/rootfs"
 ${CROSS_COMPILE}readelf -a bin/busybox | grep "program interpreter"
@@ -105,7 +110,7 @@ sudo mknod -m 666 dev/null c 1 3
 sudo mknod -m 666 dev/console c 5 1
 
 # TODO: Clean and build the writer utility
-cd "/home/m/coursera/aeld/assignment-1-me1104/finder-app/"
+cd "$SCRIPT_WD"
 make clean
 make CROSS_COMPILE=${CROSS_COMPILE}
 

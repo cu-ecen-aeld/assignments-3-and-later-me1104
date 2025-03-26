@@ -11,16 +11,16 @@ WRITEDIR=/tmp/aeld-data
 username=$(cat /etc/finder-app/conf/username.txt)
 OUTFILE=/tmp/assigment4-result.txt
 
-cd "dirname $0"
+cd "$(realpath $(dirname $0))"
 
 rm -f ${OUTFILE}
 
 if [ $# -lt 3 ]
 then
-	echo "Using default value ${WRITESTR} for string to write" > ${OUTFILE}
+	echo "Using default value ${WRITESTR} for string to write" >> ${OUTFILE}
 	if [ $# -lt 1 ]
 	then
-		echo "Using default value ${NUMFILES} for number of files to write" > ${OUTFILE}
+		echo "Using default value ${NUMFILES} for number of files to write" >> ${OUTFILE}
 	else
 		NUMFILES=$1
 	fi	
@@ -32,7 +32,7 @@ fi
 
 MATCHSTR="The number of files are ${NUMFILES} and the number of matching lines are ${NUMFILES}"
 
-echo "Writing ${NUMFILES} files containing string ${WRITESTR} to ${WRITEDIR}" > ${OUTFILE}
+echo "Writing ${NUMFILES} files containing string ${WRITESTR} to ${WRITEDIR}" >> ${OUTFILE}
 
 rm -rf "${WRITEDIR}"
 
@@ -48,7 +48,7 @@ then
 	#This issue can also be resolved by using double square brackets i.e [[ ]] instead of using quotes.
 	if [ -d "$WRITEDIR" ]
 	then
-		echo "$WRITEDIR created" > ${OUTFILE}
+		echo "$WRITEDIR created" >> ${OUTFILE}
 	else
 		exit 1
 	fi
@@ -60,10 +60,12 @@ echo "Removing the old writer utility and compiling as a native application"
 
 for i in $( seq 1 $NUMFILES)
 do
-	writer "$WRITEDIR/${username}$i.txt" "$WRITESTR" > ${OUTFILE}
+	writer "$WRITEDIR/${username}$i.txt" "$WRITESTR" >> ${OUTFILE}
 done
 
 OUTPUTSTRING=$(sh finder.sh "$WRITEDIR" "$WRITESTR")
+
+echo ${OUTPUTSTRING} >> ${OUTFILE}
 
 # remove temporary directories
 rm -rf /tmp/aeld-data
@@ -71,9 +73,9 @@ rm -rf /tmp/aeld-data
 set +e
 echo ${OUTPUTSTRING} | grep "${MATCHSTR}"
 if [ $? -eq 0 ]; then
-	echo "success" > ${OUTFILE}
+	echo "success" >> ${OUTFILE}
 	exit 0
 else
-	echo "failed: expected  ${MATCHSTR} in ${OUTPUTSTRING} but instead found" > ${OUTFILE}
+	echo "failed: expected  ${MATCHSTR} in ${OUTPUTSTRING} but instead found" >> ${OUTFILE}
 	exit 1
 fi

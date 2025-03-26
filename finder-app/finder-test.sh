@@ -11,6 +11,8 @@ WRITEDIR=/tmp/aeld-data
 username=$(cat /etc/finder-app/conf/username.txt)
 OUTFILE=/tmp/assigment4-result.txt
 
+cd "dirname $0"
+
 rm -f ${OUTFILE}
 
 if [ $# -lt 3 ]
@@ -61,7 +63,7 @@ do
 	writer "$WRITEDIR/${username}$i.txt" "$WRITESTR" > ${OUTFILE}
 done
 
-OUTPUTSTRING=$(finder.sh "$WRITEDIR" "$WRITESTR")
+OUTPUTSTRING=$(sh finder.sh "$WRITEDIR" "$WRITESTR")
 
 # remove temporary directories
 rm -rf /tmp/aeld-data

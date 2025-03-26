@@ -9,7 +9,7 @@ NUMFILES=10
 WRITESTR=AELD_IS_FUN
 WRITEDIR=/tmp/aeld-data
 username=$(cat /etc/finder-app/conf/username.txt)
-OUTFILE=/tmp/assigment4-result.txt
+OUTFILE=/tmp/assignment4-result.txt
 
 cd "$(realpath $(dirname $0))"
 
